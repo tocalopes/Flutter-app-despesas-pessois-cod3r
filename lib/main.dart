@@ -16,24 +16,35 @@ class ExpensesApp extends StatelessWidget {
     return MaterialApp(
       home: MyHomePage(),
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.purple, //range de cores
         accentColor: Colors.purple[300],
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 18,                      
+          ), 
+        ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 20,              
+            ),
+          ),
+        ),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  
   @override
   _MyHomePageState createState() => _MyHomePageState();
-
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
-
-   final _transactions = [
+  final _transactions = [
     Transaction(
       id: 't1',
       title: 'Novo tênis',
@@ -48,12 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   ];
 
-   _addTransaction (String title, double value){
+  _addTransaction(String title, double value) {
     final newTransaction = Transaction(
-      id : Random().nextDouble().toString(),
+      id: Random().nextDouble().toString(),
       title: title,
-      value : value,
-      date : DateTime.now(),
+      value: value,
+      date: DateTime.now(),
     );
 
     setState(() {
@@ -61,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     Navigator.of(context).pop();
-
   }
 
   _openTransactionFormModal(BuildContext context) {
@@ -77,7 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Despesas Pessoais"),
+        title: Text(
+          "Despesas Pessoais",
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -101,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.blue,
               ),
             ),
-            TransactionList(_transactions),                            
+            TransactionList(_transactions),
           ],
         ),
       ),
