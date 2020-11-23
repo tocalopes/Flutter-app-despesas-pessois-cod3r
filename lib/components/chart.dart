@@ -33,7 +33,7 @@ class Chart extends StatelessWidget {
 
       return map;
 
-    });
+    }).reversed.toList();
   }
 
   double get _weekTotalValue{
