@@ -25,10 +25,8 @@ class ExpensesApp extends StatelessWidget {
               fontFamily: 'OpenSans',
               fontSize: 18,
             ),
-            button: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold
-            )),
+            button:
+                TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
@@ -105,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  _addTransaction(String title, double value,DateTime date) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
@@ -120,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
-  _removeTransaction(String id){
+  _removeTransaction(String id) {
     setState(() {
       _transactions.removeWhere((tr) => tr.id == id);
     });
@@ -137,8 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    
+    final appBar =  AppBar(
         title: Text(
           "Despesas Pessoais",
         ),
@@ -148,7 +146,13 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => _openTransactionFormModal(context),
           ),
         ],
-      ),
+      );
+
+    final availableHeight = MediaQuery.of(context).size.height 
+    - appBar.preferredSize.height  - MediaQuery.of(context).padding.top;
+    
+    return Scaffold(
+      appBar:appBar,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openTransactionFormModal(context),
         child: Icon(Icons.add),
@@ -158,8 +162,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_transactions,_removeTransaction),
+            Container(
+              height: availableHeight * 0.3,
+              child: Chart(_recentTransactions),
+            ),
+            Container(
+              height: availableHeight * 0.7,
+              child: TransactionList(_transactions, _removeTransaction),
+            ),
           ],
         ),
       ),
