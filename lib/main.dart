@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   value: 310.76,
     //   date: DateTime.now().subtract(Duration(days: 33)),
     // ),
-    Transaction(
+    /*Transaction(
       id: 't1',
       title: 'Novo tênis',
       value: 310.76,
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Cinema',
       value: 211.30,
       date: DateTime.now().subtract(Duration(days: 6)),
-    ),
+    ),*/
   ];
 
   bool _showChart = false;
