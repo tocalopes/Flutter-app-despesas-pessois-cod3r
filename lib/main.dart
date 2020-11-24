@@ -31,7 +31,7 @@ class ExpensesApp extends StatelessWidget {
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 20,
+                  fontSize: 20 ,//* MediaQuery.of(context).textScaleFactor,
                 ),
               ),
         ),
