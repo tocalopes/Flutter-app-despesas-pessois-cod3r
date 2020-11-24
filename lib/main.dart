@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:math';
 
 import 'package:despesa_pessoal/components/transaction_form.dart';
@@ -16,7 +15,6 @@ void main() {
 class ExpensesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     /*SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp]
     );*/
@@ -37,7 +35,7 @@ class ExpensesApp extends StatelessWidget {
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 20 ,//* MediaQuery.of(context).textScaleFactor,
+                  fontSize: 20, //* MediaQuery.of(context).textScaleFactor,
                 ),
               ),
         ),
@@ -103,6 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  bool _showChart = false;
+
   List<Transaction> get _recentTransactions {
     return _transactions.where((t) {
       return t.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
@@ -141,24 +141,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
-    final appBar =  AppBar(
-        title: Text(
-          "Despesas Pessoais",
+    final appBar = AppBar(
+      title: Text(
+        "Despesas Pessoais",
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openTransactionFormModal(context),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openTransactionFormModal(context),
-          ),
-        ],
-      );
+      ],
+    );
 
-    final availableHeight = MediaQuery.of(context).size.height 
-    - appBar.preferredSize.height  - MediaQuery.of(context).padding.top;
-    
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      appBar:appBar,
+      appBar: appBar,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openTransactionFormModal(context),
         child: Icon(Icons.add),
@@ -168,14 +168,30 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: availableHeight * 0.25,
-              child: Chart(_recentTransactions),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Exebir gráfico'),
+                Switch(
+                  value: _showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChart = value;
+                    });
+                  },
+                ),
+              ],
             ),
-            Container(
-              height: availableHeight * 0.75,
-              child: TransactionList(_transactions, _removeTransaction),
-            ),
+            if (_showChart)
+              Container(
+                height: availableHeight * 0.25,
+                child: Chart(_recentTransactions),
+              ),
+            if (!_showChart)
+              Container(
+                height: availableHeight * 0.75,
+                child: TransactionList(_transactions, _removeTransaction),
+              ),
           ],
         ),
       ),
