@@ -53,53 +53,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: 't0',
-    //   title: 'Conta antiga',
-    //   value: 310.76,
-    //   date: DateTime.now().subtract(Duration(days: 33)),
-    // ),
     /*Transaction(
       id: 't1',
       title: 'Novo tênis',
       value: 310.76,
       date: DateTime.now().subtract(Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Cinema',
-      value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 4)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Cinema',
-      value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't4',
-      title: 'Cinema',
-      value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 2)),
-    ),
-    Transaction(
-      id: 't5',
-      title: 'Cinema',
-      value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 5)),
-    ),
-    Transaction(
-      id: 't6',
-      title: 'Cinema',
-      value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 0)),
-    ),
-    Transaction(
-      id: 't7',
-      title: 'Cinema',
-      value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 6)),
     ),*/
   ];
 
@@ -153,10 +111,14 @@ class _MyHomePageState extends State<MyHomePage> {
           : IconButton(icon: Icon(icon), onPressed: fn);
     }
 
+
+    final iconList = Platform.isIOS ? CupertinoIcons.refresh : Icons.list;
+    final chartList = Platform.isIOS ? CupertinoIcons.refresh : Icons.show_chart;
+
     final actions = [
       if (isLandscape)
         _getIconButton(
-          _showChart ? Icons.list : Icons.show_chart,
+          _showChart ? iconList : chartList, 
           () {
             setState(() {
               _showChart = !_showChart;
@@ -188,39 +150,40 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar.preferredSize.height -
         mediaQuery.padding.top;
 
-    final page = SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (isLandscape)
-            /*Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Exebir gráfico'),
-                Switch.adaptive(
-                  activeColor: Theme.of(context).accentColor,
-                  value: _showChart,
-                  onChanged: (value) {
-                    setState(() {
-                      _showChart = value;
-                    });
-                  },
+    final page = SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (isLandscape)
+              /*Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Exebir gráfico'),
+                  Switch.adaptive(
+                    activeColor: Theme.of(context).accentColor,
+                    value: _showChart,
+                    onChanged: (value) {
+                      setState(() {
+                        _showChart = value;
+                      });
+                    },
+                  ),
+                ],
+              ),*/
+              if (_showChart || !isLandscape)
+                Container(
+                  height: availableHeight * (isLandscape ? 0.8 : 0.25),
+                  child: Chart(_recentTransactions),
                 ),
-              ],
-            ),*/
-            if (_showChart || !isLandscape)
+            if (!_showChart || !isLandscape)
               Container(
-                height: availableHeight * (isLandscape ? 0.8 : 0.25),
-                child: Chart(_recentTransactions),
+                height: availableHeight * (isLandscape ? 1 : 0.75),
+                child: TransactionList(_transactions, _removeTransaction),
               ),
-          if (!_showChart || !isLandscape)
-            Container(
-              height: availableHeight * (isLandscape ? 1 : 0.75),
-              child: TransactionList(_transactions, _removeTransaction),
-            ),
-        ],
-      ),
-    );
+          ],
+        ),
+      ));
 
     return Platform.isIOS
         ? CupertinoPageScaffold(
