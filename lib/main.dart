@@ -149,6 +149,14 @@ class _MyHomePageState extends State<MyHomePage> {
         "Despesas Pessoais",
       ),
       actions: [
+       if(isLandscape) IconButton(
+          icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+          onPressed: () {
+            setState((){
+              _showChart = !_showChart;
+            });
+          },
+        ),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
@@ -172,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if(isLandscape)
-            Row(
+            /*Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Exebir gráfico'),
@@ -185,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ],
-            ),
+            ),*/
             if (_showChart || !isLandscape)
               Container(
                 height: availableHeight * (isLandscape ? 0.7 : 0.25),
