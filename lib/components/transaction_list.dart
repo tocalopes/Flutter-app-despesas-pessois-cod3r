@@ -14,7 +14,7 @@ class TransactionList extends StatelessWidget {
         ? LayoutBuilder(builder: (context, constraints) {
             return Column(
               children: [
-                SizedBox(height:constraints.maxHeight * 0.05),
+                SizedBox(height: constraints.maxHeight * 0.05),
                 Container(
                   height: constraints.maxHeight * 0.3,
                   child: Text(
@@ -57,11 +57,18 @@ class TransactionList extends StatelessWidget {
                   subtitle: Text(
                     DateFormat('d/MM/y').format(tr.date),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => onRemove(tr.id),
-                    color: Theme.of(context).errorColor,
-                  ),
+                  trailing: MediaQuery.of(context).size.width > 400
+                      ? FlatButton.icon(
+                          onPressed: () => onRemove(tr.id),
+                          icon: Icon(Icons.delete),
+                          label: Text("Excluir"),
+                          textColor: Theme.of(context).errorColor,
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => onRemove(tr.id),
+                          color: Theme.of(context).errorColor,
+                        ),
                 ),
               );
             });
