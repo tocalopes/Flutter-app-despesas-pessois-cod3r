@@ -17,24 +17,24 @@ class _TransactionFormState extends State<TransactionForm> {
   final _valueController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
 
-  @override
-  void initState(){
-    super.initState();
-    print('initState() _transactionFormstate');
-  }
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   print('initState() _transactionFormstate');
+  // }
 
-  @override
-  void didUpdateWidget(TransactionForm oldWidget){
-    super.didUpdateWidget(oldWidget);
-    print('didUpdateWidget() _transactionFormstate');
-  }
+  // @override
+  // void didUpdateWidget(TransactionForm oldWidget){
+  //   super.didUpdateWidget(oldWidget);
+  //   print('didUpdateWidget() _transactionFormstate');
+  // }
 
   
-  @override
-  void dispose(){
-    super.dispose();
-    print('dispose() _transactionFormstate');
-  }
+  // @override
+  // void dispose(){
+  //   super.dispose();
+  //   print('dispose() _transactionFormstate');
+  // }
 
 
   _submitForm() {

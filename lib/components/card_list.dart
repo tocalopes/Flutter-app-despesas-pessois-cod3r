@@ -8,30 +8,29 @@ class CardList extends StatefulWidget {
   final Transaction transaction;
   final void Function(String) onRemove;
 
-  CardList({this.transaction, this.onRemove});
+  const CardList({
+    this.transaction,
+    this.onRemove,
+    Key key
+  }) : super(key: key);
 
   @override
   _CardListState createState() => _CardListState();
 }
 
 class _CardListState extends State<CardList> {
-  
-  static const colors = [
-    Colors.red,
-    Colors.orange,
-    Colors.blue,
-    Colors.black
-  ];
+  static const colors = [Colors.red, Colors.orange, Colors.blue, Colors.black];
 
   Color _backgroundColor;
 
   @override
   void initState() {
     super.initState();
-    int i = Random().nextInt(5);
+    int i = Random().nextInt(4);
+    print('Card List()_ initstate_ color indicie => $i');
     _backgroundColor = colors[i];
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Card(
