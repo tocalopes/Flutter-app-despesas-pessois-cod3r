@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'dart:io';
 
+import 'package:despesa_pessoal/components/expenses_resume.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'components/transaction_form.dart';
 import 'components/transaction_list.dart';
-import 'components/chart.dart';
-import 'models/transaction.dart';
+import 'models/transaction_model.dart';
 
 main() => runApp(ExpensesApp());
 
@@ -17,8 +17,8 @@ class ExpensesApp extends StatelessWidget {
     return MaterialApp(
       home: MyHomePage(),
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.amber,
+        primarySwatch: Colors.blueGrey,
+        accentColor: Color.fromRGBO(5, 9, 92, 1.0),
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -51,7 +51,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  final List<Transaction> _transactions = [];
+  final List<TransactionModel> _transactions = [];
   bool _showChart = false;
 
   @override
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     print(state);
   }
 
-  List<Transaction> get _recentTransactions {
+  List<TransactionModel> get _recentTransactions {
     return _transactions.where((tr) {
       return tr.date.isAfter(DateTime.now().subtract(
         Duration(days: 7),
@@ -80,8 +80,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   _addTransaction(String title, double value, DateTime date) {
-    final newTransaction = Transaction(
-      id: Random().nextDouble().toString(),
+    final newTransaction = TransactionModel.regular(
+      id: Random().nextDouble().toInt(),
       title: title,
       value: value,
       date: date,
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     Navigator.of(context).pop();
   }
 
-  _removeTransaction(String id) {
+  _removeTransaction(int id) {
     setState(() {
       _transactions.removeWhere((tr) => tr.id == id);
     });
@@ -117,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    
     final mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
@@ -162,30 +163,20 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // if (isLandscape)
-            //   Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: <Widget>[
-            //       Text('Exibir Gráfico'),
-            //       Switch.adaptive(
-            //         activeColor: Theme.of(context).accentColor,
-            //         value: _showChart,
-            //         onChanged: (value) {
-            //           setState(() {
-            //             _showChart = value;
-            //           });
-            //         },
-            //       ),
-            //     ],
-            //   ),
             if (_showChart || !isLandscape)
               Container(
-                height: availableHeight * (isLandscape ? 0.8 : 0.3),
-                child: Chart(_recentTransactions),
+                height: availableHeight * (isLandscape ? 0.8 : 0.2),
+                child: ExpensesResume(
+                  budget: 3000.0,
+                  totalSpent: (_transactions.isEmpty) ? 0 
+                  : _transactions.map((e) => e.value)
+                    .toList()
+                    .reduce((value, element) => value + element),                            
+                ),
               ),
             if (!_showChart || !isLandscape)
               Container(
-                height: availableHeight * (isLandscape ? 1 : 0.7),
+                height: availableHeight * (isLandscape ? 1 : 0.8),
                 child: TransactionList(_transactions, _removeTransaction),
               ),
           ],
@@ -208,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     onPressed: () => _openTransactionFormModal(context),
                   ),
             floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
+                FloatingActionButtonLocation.endFloat,
           );
   }
 }

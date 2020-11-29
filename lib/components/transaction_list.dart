@@ -1,11 +1,11 @@
 import 'package:despesa_pessoal/components/card_list.dart';
 import 'package:flutter/material.dart';
-import '../models/transaction.dart';
+import '../models/transaction_model.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
-  final void Function(String) onRemove;
+  final List<TransactionModel> transactions;
+  final void Function(int) onRemove;
 
   TransactionList(this.transactions, this.onRemove);
 

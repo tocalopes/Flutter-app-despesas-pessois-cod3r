@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:despesa_pessoal/models/transaction.dart';
+import 'package:despesa_pessoal/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CardList extends StatefulWidget {
-  final Transaction transaction;
-  final void Function(String) onRemove;
+  final TransactionModel transaction;
+  final void Function(int) onRemove;
 
   const CardList({
     this.transaction,
