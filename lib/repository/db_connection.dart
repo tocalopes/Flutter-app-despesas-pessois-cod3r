@@ -30,7 +30,7 @@ class DbConnection {
           ${transactionTable['idColumn']} INTEGER PRIMARY KEY, 
           ${transactionTable['valueColumn']} REAL,
           ${transactionTable['dateColumn']} TEXT,
-          ${transactionTable['titleColumn']} TEXT,);
+          ${transactionTable['titleColumn']} TEXT);
           CREATE TABLE ${budgetTable['tableName']} (
           ${budgetTable['idColumn']} INTEGER PRIMARY KEY, 
           ${budgetTable['valueColumn']} REAL);"""

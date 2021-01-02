@@ -4,7 +4,8 @@ import 'package:sqflite/sqflite.dart';
 
 class TransactionRepository {
   static final dbConnection = DbConnection();
-  final table = TransactionModel.transactionTable['tableName']; 
+  final table = TransactionModel.transactionTable['tableName'];
+  final idColumn =  TransactionModel.transactionTable['idColumn'];
 
   Future<void> save(TransactionModel transaction) async {
     final Database db = await dbConnection.db;
@@ -23,6 +24,11 @@ class TransactionRepository {
       listModel.add(TransactionModel.fromMap(m));
     }
     return listModel;
+  }
+
+  Future<void> delete(int id) async{
+    Database db = await dbConnection.db;
+    db.delete(table,where: '$idColumn = ?',whereArgs: [id]);
   }
 
 
