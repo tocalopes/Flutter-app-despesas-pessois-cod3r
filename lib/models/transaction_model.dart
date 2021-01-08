@@ -20,10 +20,10 @@ class TransactionModel {
 
   TransactionModel();
 
-  TransactionModel.regular(
-      this.id, this.title, this.date, this.value, this.type);
+  TransactionModel.toInsert(
+      this.title, this.date, this.value, this.type);
 
-  static List<TransactionModel> testList() {
+  /*static List<TransactionModel> testList() {
     return [
       TransactionModel.regular( 1, 'teste 1', DateTime.now(), 12.00, TransactionType.BILL),
       TransactionModel.regular( 2, 'teste 2', DateTime.now(), 12.00, TransactionType.UBER),
@@ -35,7 +35,7 @@ class TransactionModel {
       TransactionModel.regular( 2, 'teste 2', DateTime.now(), 12.00, TransactionType.UBER),
       TransactionModel.regular( 3, 'teste 3', DateTime.now(), 12.00, TransactionType.FOOD),
     ];
-  }
+  }*/
 
   Map<String, dynamic> toMap() {
     return {
@@ -43,7 +43,7 @@ class TransactionModel {
       transactionTable['titleColumn']: title,
       transactionTable['valueColumn']: value,
       transactionTable['dateColumn']: date.toString(),
-      transactionTable['transactionTypeColumn']: type
+      transactionTable['transactionTypeColumn']: type.index
     };
   }
 
