@@ -52,6 +52,6 @@ class TransactionModel {
     this.title = map[transactionTable['titleColumn']];
     this.value = map[transactionTable['valueColumn']];
     this.date = DateTime.parse(map[transactionTable['dateColumn']]);
-    this.type = map[transactionTable['transactionTypeColumn']];
+    this.type = TransactionType.values[map[transactionTable['transactionTypeColumn']]];
   }
 }

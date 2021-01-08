@@ -3,22 +3,28 @@ import 'package:despesa_pessoal/repository/transaction_repository.dart';
 import 'package:flutter/foundation.dart';
 
 class ExpensesProvider with ChangeNotifier {
-  TransactionRepository repo = new TransactionRepository();
+
+  
   List<TransactionModel> _transactions;
 
-  Future<List<TransactionModel>> get transactions async{
-    _transactions = await repo.getAll();
+  ExpensesProvider(this._transactions);
+  
+  final repo = TransactionRepository();
+
+  List<TransactionModel>  get transactions {
     return [..._transactions];
   }
 
-  void add(TransactionModel transaction) async {
-    await repo.save(transaction);
+
+  void add(TransactionModel transaction) {
+    print('expenses provider => ${transaction}');
+    //repo.save(transaction).then((value) => null);
     _transactions.add(transaction);
     notifyListeners();
   }
 
-  void remove(int id) async {
-    await repo.delete(id);
+  void remove(int id)  {
+    repo.delete(id);
     _transactions.remove(id);
     notifyListeners();
   }

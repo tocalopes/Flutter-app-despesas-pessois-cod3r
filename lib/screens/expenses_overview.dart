@@ -15,9 +15,6 @@ class ExpensesOverview extends StatefulWidget {
 }
 
 class _ExpensesOverviewState extends State<ExpensesOverview> {
-  PersistentBottomSheetController
-      _controllerBottomSheet; // <------ Instance variable
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openTransactionFormModal(
     BuildContext context,
@@ -35,8 +32,11 @@ class _ExpensesOverviewState extends State<ExpensesOverview> {
         });
   }
 
+
   @override
   Widget build(BuildContext context) {
+  
+    
     final backGroundColor = Colors.blue[300];
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;

@@ -27,7 +27,7 @@ class DbConnection {
     return await openDatabase(path, version: 1, onCreate: (Database db, int newerVersion) async {
       await db.execute(
         """CREATE TABLE ${transactionTable['tableName']} (
-          ${transactionTable['idColumn']} INTEGER PRIMARY KEY, 
+          ${transactionTable['idColumn']} INTEGER, 
           ${transactionTable['valueColumn']} REAL,
           ${transactionTable['dateColumn']} TEXT,
           ${transactionTable['titleColumn']} TEXT,

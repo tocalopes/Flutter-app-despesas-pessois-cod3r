@@ -1,5 +1,6 @@
 import 'package:despesa_pessoal/models/transaction_model.dart';
 import 'package:despesa_pessoal/providers/expenses_provider.dart';
+import 'package:despesa_pessoal/repository/transaction_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,7 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
   DateTime _selectedDate;
   Widget build(BuildContext context) {
     final ExpensesProvider expenseProvider =
-        Provider.of<ExpensesProvider>(context);
+        Provider.of<ExpensesProvider>(context,listen:false);
     print('PROVIDER: $expenseProvider');
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -138,7 +139,8 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
                       double.parse(widget.valueController.text);
                   transactionModel.date = _selectedDate;
                   transactionModel.type = getTransactionType();
-                  await expenseProvider.add(transactionModel);                  
+                  var fodase = await TransactionRepository().save(transactionModel);
+                  expenseProvider.add(fodase);                  
                 },
                 child: Text('Cadastrar'),
                 color: Colors.blue[300],

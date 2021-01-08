@@ -7,7 +7,7 @@ class TransactionRepository {
   final table = TransactionModel.transactionTable['tableName'];
   final idColumn =  TransactionModel.transactionTable['idColumn'];
 
-  Future<void> save(TransactionModel transaction) async {
+  Future<TransactionModel> save(TransactionModel transaction) async {
     final Database db = await dbConnection.db;
     transaction.id = await db.insert(
       table,
@@ -19,6 +19,7 @@ class TransactionRepository {
   Future<List<TransactionModel>> getAll() async {
     Database db = await dbConnection.db;
     List listMap = await db.rawQuery("SELECT * FROM $table");
+    //print('\n\n\n\n\nTRANSACTION REPOSITORU CARAI =>>>>>> ${listMap.toString()} \n\n\n\n\n');
     List<TransactionModel> listModel = List();
     for(Map m in listMap){
       listModel.add(TransactionModel.fromMap(m));
