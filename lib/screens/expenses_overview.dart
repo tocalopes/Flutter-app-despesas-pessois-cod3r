@@ -22,7 +22,7 @@ class _ExpensesOverviewState extends State<ExpensesOverview> {
     TextEditingController valueController,
     TextEditingController dateController,
   ) {
-    print('asda');
+    
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -36,7 +36,7 @@ class _ExpensesOverviewState extends State<ExpensesOverview> {
   @override
   Widget build(BuildContext context) {
   
-    
+    var expensesProvider = Provider.of<ExpensesProvider>(context);
     final backGroundColor = Colors.blue[300];
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -88,7 +88,7 @@ class _ExpensesOverviewState extends State<ExpensesOverview> {
               color: backGroundColor,
             ),
           ),
-          ExpensesListComponent(),
+          ExpensesListComponent(expensesProvider.transactions),
         ],
       ),
     );

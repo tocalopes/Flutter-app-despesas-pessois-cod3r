@@ -22,11 +22,10 @@ class ExpensesFormModal extends StatefulWidget {
 
 class _ExpensesFormModalState extends State<ExpensesFormModal> {
   @override
-  List<String> listTypes = ['Uber', 'Comida', 'Compras', 'Contas'];
+  List<String> listTypes = ['Compras','Comida',  'Contas','Uber'];
   String dropdownValue;
 
-  void changeDropDownItem(String item) {
-    print('$item');
+  void changeDropDownItem(String item) {    
     setState(() {
       dropdownValue = item;
     });
@@ -45,14 +44,14 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
     if (dropdownValue == 'Contas') {
       return TransactionType.BILL;
     }
-    return null;
+    return TransactionType.BILL;
   }
 
   DateTime _selectedDate;
   Widget build(BuildContext context) {
     final ExpensesProvider expenseProvider =
-        Provider.of<ExpensesProvider>(context,listen:false);
-    print('PROVIDER: $expenseProvider');
+        Provider.of<ExpensesProvider>(context, listen: false);
+    
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       width: double.infinity,
@@ -62,7 +61,12 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
         child: Column(
           children: [
             TextField(
-              autofocus: true,
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
               keyboardType: TextInputType.text,
               controller: widget.titleController,
               decoration: InputDecoration(
@@ -70,7 +74,12 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
               ),
             ),
             TextField(
-              autofocus: true,
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
               keyboardType: TextInputType.number,
               controller: widget.valueController,
               decoration: InputDecoration(
@@ -81,11 +90,15 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _selectedDate.toString(),
+                  (_selectedDate != null) ? DateFormat('dd/MM/yyyy').format(_selectedDate) : '...',
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
                 FlatButton(
                   onPressed: () {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
                     showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
@@ -103,6 +116,12 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
               ],
             ),
             DropdownButton<String>(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
               value: dropdownValue == null ? listTypes[0] : '$dropdownValue',
               icon: Icon(Icons.arrow_downward),
               iconSize: 24,
@@ -129,18 +148,16 @@ class _ExpensesFormModalState extends State<ExpensesFormModal> {
               alignment: Alignment.center,
               child: FlatButton(
                 onPressed: () async {
-                  print(
-                      'Desc: ${widget.titleController.text.toString()}, price: R\$${widget.valueController.text.toString()}, date: ${_selectedDate.toString()}, type: ${getTransactionType()}');
-                  print('PROVIDER: $expenseProvider');
                   TransactionModel transactionModel = TransactionModel();
-                  print(transactionModel);
                   transactionModel.title = widget.titleController.text;
                   transactionModel.value =
                       double.parse(widget.valueController.text);
                   transactionModel.date = _selectedDate;
                   transactionModel.type = getTransactionType();
-                  var fodase = await TransactionRepository().save(transactionModel);
-                  expenseProvider.add(fodase);                  
+                  var fodase =
+                      await TransactionRepository().save(transactionModel);
+                  expenseProvider.add(fodase);
+                  Navigator.of(context).pop();
                 },
                 child: Text('Cadastrar'),
                 color: Colors.blue[300],

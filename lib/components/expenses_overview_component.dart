@@ -1,8 +1,35 @@
+import 'package:despesa_pessoal/providers/budget_provider.dart';
+import 'package:despesa_pessoal/providers/expenses_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ExpensesOverviewComponent extends StatelessWidget {
+class ExpensesOverviewComponent extends StatefulWidget {
+  @override
+  _ExpensesOverviewComponentState createState() => _ExpensesOverviewComponentState();
+}
+
+class _ExpensesOverviewComponentState extends State<ExpensesOverviewComponent> {
+  
+  var editingBudget = false;
+
+  void editBudget(){
+    setState(() {
+      editingBudget = true;
+    });
+  }
+
+  void changeBudget(){
+    setState(() {
+      editingBudget = false;
+    });
+  }
+
+  TextEditingController budgetController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    var budgetProvider = Provider.of<BudgetProvider>(context);
+    var expensesProvider = Provider.of<ExpensesProvider>(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final backGroundColor = Colors.blue[300];
@@ -22,13 +49,24 @@ class ExpensesOverviewComponent extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
+                  onTap: editBudget,
                     leading: Icon(
                       Icons.monetization_on,
                       color: greenColor,
                       size: 35,
                     ),
-                    title: Text(
-                      "R\$ 2000,00",
+                    title: editingBudget 
+                    ? TextField(
+                      //controller: budgetController,
+                      keyboardType: TextInputType.number,
+                      onSubmitted: (value){
+                        budgetProvider.update(double.parse(value));
+                        changeBudget();
+                      },
+                    ) 
+                    
+                    : Text(
+                      "R\$ ${budgetProvider.value}",
                       style: TextStyle(
                         fontSize: 25,
                         color: greenColor,
@@ -45,7 +83,7 @@ class ExpensesOverviewComponent extends StatelessWidget {
                     size: 35,
                   ),
                   title: Text(
-                    "R\$ 2000,00",
+                    "R\$ ${expensesProvider.total}",
                     style: TextStyle(
                       fontSize: 25,
                       color: redColor,
@@ -55,14 +93,7 @@ class ExpensesOverviewComponent extends StatelessWidget {
                     "Total Gasto",
                     style: TextStyle(color: redColor),
                   ),
-                  trailing: FlatButton(
-                    onPressed: () {},
-                    child: Text('Alterar',
-                        style: TextStyle(
-                          color: Colors.white,
-                        )),
-                    color: backGroundColor,
-                  ),
+                  
                 ),
                 ListTile(
                   leading: Icon(
@@ -71,7 +102,7 @@ class ExpensesOverviewComponent extends StatelessWidget {
                     size: 35,
                   ),
                   title: Text(
-                    "R\$ 2000,00",
+                    "R\$ ${budgetProvider.value - expensesProvider.total}",
                     style: TextStyle(
                       fontSize: 25,
                       color: redColor,
